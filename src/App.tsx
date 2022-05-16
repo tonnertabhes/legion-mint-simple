@@ -82,6 +82,11 @@ function App() {
       ) : (
         <h3 className="text">Connected!</h3>
       )}
+      {chainId !== 80001 ? (
+        <h3 className="text">Switch to MATIC MUMBAI Network</h3>
+      ) : (
+        ""
+      )}
       {error === undefined ? "" : <h3 className="text">{error}</h3>}
       <button onClick={() => connectAndMint()}>Mint</button>
     </div>
