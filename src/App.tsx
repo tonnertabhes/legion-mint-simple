@@ -11,26 +11,23 @@ declare const window: any;
 function App() {
   const { activate, chainId, account, library } = useWeb3React();
   const [error, setError] = useState("");
+  const [pressed, setPressed] = useState(false);
 
   useEffect(() => {
     if (!window.ethereum) {
       window.alert("Please Install MetaMask to Mint");
       window.location.href = "https://metamask.io/";
     }
-    if (!account) {
-      try {
-        activate(MetaMask);
-      } catch (err) {
-        console.log(err);
-      }
-    }
   }, []);
 
   useEffect(() => {
-    if (chainId !== 80001 && chainId !== undefined) {
-      window.alert("Please connect to Mumbai");
-    }
-  }, [account, chainId]);
+    if (account === undefined) return;
+    mint();
+  }, [library]);
+
+  const connect = async () => {
+    await activate(MetaMask);
+  };
 
   const mint = async () => {
     const provider = await library;
@@ -39,6 +36,10 @@ function App() {
     const metadata = ethers.utils.formatBytes32String("");
 
     try {
+      if (chainId !== 80001) {
+        window.alert("Switch to Mumbai Testnet");
+        return;
+      }
       await contract.mint(11, 1, [metadata], [metadata], metadata);
       setTimeout(() => {
         var text =
@@ -62,33 +63,15 @@ function App() {
     }
   };
 
-  const connectAndMint = async () => {
-    if (account) {
-      try {
-        mint();
-      } catch (err) {
-        console.log(err);
-      }
-      return;
-    }
-    window.alert("Connect with MetaMask!");
-    await activate(MetaMask);
+  const click = async () => {
+    connect();
   };
 
   return (
     <div className="App">
-      {account === undefined ? (
-        <h3 className="text">Connecting with MetaMask...</h3>
-      ) : (
-        <h3 className="text">Connected!</h3>
-      )}
-      {chainId !== 80001 ? (
-        <h3 className="text">Switch to MATIC MUMBAI Network</h3>
-      ) : (
-        ""
-      )}
-      {error === undefined ? "" : <h3 className="text">{error}</h3>}
-      <button onClick={() => connectAndMint()}>Mint</button>
+      <button className="btn" onClick={() => click()}>
+        <span>MINT</span>
+      </button>
     </div>
   );
 }
