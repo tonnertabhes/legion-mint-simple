@@ -46,13 +46,25 @@ function App() {
         window.location.href = url;
       }, 2000);
     } catch (err: any) {
+      if (err.error.code === -32603) {
+        window.alert("Max NFT Allowance: 1");
+        return;
+      }
       console.log(err);
     }
   };
 
   const click = async () => {
     await connect();
-    await mint();
+    try {
+      await mint();
+    } catch (err: any) {
+      if (
+        err ===
+        "TypeError: Cannot read properties of undefined (reading 'getSigner')"
+      )
+        return;
+    }
   };
 
   return (
