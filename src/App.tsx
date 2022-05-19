@@ -10,8 +10,6 @@ declare const window: any;
 
 function App() {
   const { activate, chainId, account, library } = useWeb3React();
-  const [error, setError] = useState("");
-  const [pressed, setPressed] = useState(false);
 
   useEffect(() => {
     if (!window.ethereum) {
@@ -31,7 +29,7 @@ function App() {
 
   const mint = async () => {
     const provider = await library;
-    const signer = provider.getSigner();
+    const signer = await provider.getSigner();
     const contract = new ethers.Contract(CONTRACTADDRESS, CONTRACT_ABI, signer);
     const metadata = ethers.utils.formatBytes32String("");
 
@@ -48,23 +46,13 @@ function App() {
         window.location.href = url;
       }, 2000);
     } catch (err: any) {
-      if (err.code === -32603) {
-        setError("ERROR: 1 NFT Per Wallet");
-        return;
-      }
-      if (err.code === 4001) {
-        setError("ERROR: User denied transaction");
-        return;
-      }
-      if (err.error.code === -32603) {
-        setError(`ERROR: 1 NFT Per Wallet`);
-      }
       console.log(err);
     }
   };
 
   const click = async () => {
-    connect();
+    await connect();
+    await mint();
   };
 
   return (
