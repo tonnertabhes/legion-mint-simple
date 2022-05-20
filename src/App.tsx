@@ -1,7 +1,11 @@
 import { useWeb3React } from "@web3-react/core";
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import { MetaMask } from "./helpers/connectors";
+import {
+  MetaMask,
+  WalletConnect,
+  resetWalletConnectConnector,
+} from "./helpers/connectors";
 import { CONTRACTADDRESS } from "./constants/address";
 import { CONTRACT_ABI } from "./constants/contractABI";
 import "./App.css";
@@ -10,9 +14,26 @@ declare const window: any;
 
 function App() {
   const { activate, chainId, account, library } = useWeb3React();
+  const [mobile, setMobile] = useState(true);
+
+  const handleResize = () => {
+    if (window.innerWidth < 1000) {
+      setMobile(true);
+      return;
+    }
+    setMobile(false);
+  };
+
+  window.addEventListener("resize", handleResize);
 
   useEffect(() => {
-    if (!window.ethereum) {
+    if (window.innerWidth > 1000) {
+      setMobile(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!window.ethereum && mobile === false) {
       window.alert("Please Install MetaMask to Mint");
       window.location.href = "https://metamask.io/";
     }
@@ -34,14 +55,14 @@ function App() {
     const metadata = ethers.utils.formatBytes32String("");
 
     try {
-      if (chainId !== 80001) {
-        window.alert("Switch to Mumbai Testnet");
+      if (chainId !== 1) {
+        window.alert("Switch to Ethereum Mainnet");
         return;
       }
-      await contract.mint(11, 1, [metadata], [metadata], metadata);
+      await contract.mint(1, 1, [metadata], [metadata], metadata);
       setTimeout(() => {
         var text =
-          "Queen who sees the battlefield entire, who whispers in each general's ear, I call to you.  Queen @JennieTheDivine, Bringer of Bliss, hear my prayers.  Have mercy on me in your wisdom and righteousness.%0a%0aI am Legion in @TheForeverWar%0a%0a%20%23annihilation";
+          "Queen who sees the battlefield entire, who whispers in each general's ear, I call to you.  Queen @JennieTheDivine, Bringer of Bliss, hear my prayers.  Have mercy on me in your wisdom and righteousness.%0a%0aI am Legion in @TheForeverWar";
         var url = "https://twitter.com/intent/tweet?&text=" + text;
         window.location.href = url;
       }, 2000);
@@ -55,6 +76,11 @@ function App() {
   };
 
   const click = async () => {
+    if (mobile === true) {
+      resetWalletConnectConnector();
+      await activate(WalletConnect);
+      return;
+    }
     await connect();
     try {
       await mint();

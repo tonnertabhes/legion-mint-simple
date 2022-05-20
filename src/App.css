@@ -1,24 +1,22 @@
 .App {
-  background: linear-gradient(
-    90deg,
-    rgba(46, 44, 45, 1) 0%,
-    rgba(66, 64, 67, 1) 100%
-  );
+  background: linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 100%);
+  /* linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 100%) */
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   height: 100vh;
   margin: 0;
 }
 
 .btn {
   position: relative;
-  width: 7em;
-  height: 7em;
+  width: 10em;
+  height: 10em;
   border-radius: 50%;
   outline: none;
   border: 4px #090909 solid;
-  background: linear-gradient(145deg, #7e0606, #e01010);
+  background: linear-gradient(145deg, #000000, #383838);
   box-shadow: inset 2px 2px 0px #7d7c7e, inset -2px -2px 0px #1c1c1c;
   color: #fff;
   font-weight: bolder;
@@ -28,6 +26,7 @@
 
 .btn span {
   font-size: 2em;
+  text-shadow: 0 0 10px white;
 }
 
 .btn::before {
@@ -38,14 +37,18 @@
   transform: translate(-50%, -50%);
   border-radius: inherit;
   background: none;
-  width: 7.25em;
-  height: 7.25em;
+  width: 10.5em;
+  height: 10.5em;
   box-shadow: 11px 11px 22px #141414, -11px -11px 22px #525252;
 }
 
 .btn:active {
-  background: linear-gradient(-185deg, #3f0000, #850c0c);
+  background: linear-gradient(-185deg, #000000, #222222);
   box-shadow: inset -2px -2px 0px #5e5e5e, inset 2px 2px 0px #1c1c1c;
+}
+
+.btn:hover {
+  cursor: pointer;
 }
 
 .btn:active span {

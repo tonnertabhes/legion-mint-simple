@@ -186,6 +186,50 @@ export const CONTRACT_ABI = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "uint256", name: "id", type: "uint256" }],
+    name: "getItem",
+    outputs: [
+      {
+        components: [
+          { internalType: "uint256", name: "id", type: "uint256" },
+          { internalType: "uint256", name: "maxSupply", type: "uint256" },
+          { internalType: "uint256", name: "maxPerWallet", type: "uint256" },
+          { internalType: "uint256", name: "mintStart", type: "uint256" },
+          { internalType: "uint256", name: "price", type: "uint256" },
+          { internalType: "bool", name: "honorWhitelist", type: "bool" },
+          { internalType: "bytes32", name: "passRoot", type: "bytes32" },
+        ],
+        internalType: "struct SingularityItem",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256[]", name: "ids", type: "uint256[]" }],
+    name: "getItems",
+    outputs: [
+      {
+        components: [
+          { internalType: "uint256", name: "id", type: "uint256" },
+          { internalType: "uint256", name: "maxSupply", type: "uint256" },
+          { internalType: "uint256", name: "maxPerWallet", type: "uint256" },
+          { internalType: "uint256", name: "mintStart", type: "uint256" },
+          { internalType: "uint256", name: "price", type: "uint256" },
+          { internalType: "bool", name: "honorWhitelist", type: "bool" },
+          { internalType: "bytes32", name: "passRoot", type: "bytes32" },
+        ],
+        internalType: "struct SingularityItem[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       { internalType: "address", name: "account", type: "address" },
       { internalType: "address", name: "operator", type: "address" },
@@ -206,6 +250,16 @@ export const CONTRACT_ABI = [
     name: "mint",
     outputs: [],
     stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "addr", type: "address" },
+      { internalType: "uint256", name: "id", type: "uint256" },
+    ],
+    name: "mintsPerWallet",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
     type: "function",
   },
   {
